@@ -28,17 +28,22 @@ Scenario: restrict to movies with 'PG' or 'R' ratings
   # enter step(s) to uncheck all other checkboxes 
   And I uncheck "ratings_G"
   And I uncheck "ratings_PG-13"
+  #Given I check the following ratings: PG, R
   # enter step to "submit" the search form on the homepage
   And I press "ratings_submit"
   # enter step(s) to ensure that PG and R movies are visible
-  Then I should see "PG"
-  And I should see "R"
+  Then I should see "Amelie"
+  And I should see "The Incredibles"
   # enter step(s) to ensure that other movies are not visible
-  And I should not see "PG-13"
-  And I should not see "G"  
+  And I should not see "The Help"
+  And I should not see "Aladdin"  
 
 Scenario: no ratings selected
-  # see assignment
+  Given I uncheck the following ratings: PG, R, G, PG-13
+  When I press "ratings_submit"
+  Then I should see no movies
 
 Scenario: all ratings selected
-  # see assignment
+  Given I check the following ratings: PG, R, G, PG-13
+  When I press "ratings_submit"
+  Then I should see all of the movies
